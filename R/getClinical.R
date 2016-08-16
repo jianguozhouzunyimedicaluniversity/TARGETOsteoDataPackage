@@ -2,7 +2,6 @@
 #'
 #' Create TARGET OS clinical data.frame from raw data in the TARGETOsteoDataPackage
 #'
-#' @import TARGETOsteoDataPackage
 #' @import readxl
 #' @export
 getClinical = function() {
