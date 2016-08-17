@@ -9,7 +9,7 @@
 #' @export
 getMethylation = function() {
     clinical = getClinical()
-    tmp = read_tsv(system.file('extdata/TARGET_OS_meth_level2.txt.gz',package='TARGETOsteoDataPackage'))
+    tmp = read_tsv('ftp://caftpd.nci.nih.gov/pub/dcc_target/OS/methylation_array/L2/TARGET_OS_meth_level2.txt')
     tmp2 = as.matrix(tmp[,-1])
     rownames(tmp2) = tmp %>% .[['ReporterID']]
     colnames(tmp2) = substr(colnames(tmp2),1,16)

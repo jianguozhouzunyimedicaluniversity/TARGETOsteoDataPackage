@@ -19,13 +19,14 @@ getAffyExpr = function() {
     ## keys based on celfile names
     cnmap = rownames(fullpheno)
     names(cnmap) = fullpheno %>% .[['Array Data File']]
-    tmp = read_tsv(system.file('extdata/gene_core_rma_summary_annot.txt.gz',
-                   package='TARGETOsteoDataPackage'))
+    tmp = read_tsv('ftp://caftpd.nci.nih.gov/pub/dcc_target/OS/gene_expression_array/L3/gene_core_rma_summary_annot.txt')
     tmp2 = as.matrix(tmp[,-1])
+    tmp2 = apply(tmp2,2,as.numeric)
     rownames(tmp2) = tmp %>% .[['probeset_id']]
     colnames(tmp2) = cnmap[colnames(tmp2)]
-    ovl = intersect(colnames(tmp2),rownames(clinical))
-    se = SummarizedExperiment(assays=list(exprs=tmp2[,ovl]),colData=clinical[ovl,])
+    ovl = as.character(intersect(colnames(tmp2),rownames(clinical)))
+    se = SummarizedExperiment(assays=list(exprs=tmp2[,ovl]),
+                              colData=as.data.frame(clinical[match(ovl,rownames(clinical)),]))
     rowdata = AnnotationDbi::select(huex10sttranscriptcluster.db,keys=rownames(se),
                          columns=c('SYMBOL','ACCNUM','ENTREZID','ENSEMBL'),keytype='PROBEID') %>%
               group_by(PROBEID) %>%
